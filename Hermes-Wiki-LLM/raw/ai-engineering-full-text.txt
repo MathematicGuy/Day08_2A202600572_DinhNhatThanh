@@ -1,0 +1,6 @@
+---
+source_url: https://www.oreilly.com/library/view/ai-engineering/9781098166304/
+ingested: 2026-06-01
+sha256: df45fd341d6ba52a76dee8dabab6cd37979732351bfc8f92db6c1a60e93958cf
+---
+
