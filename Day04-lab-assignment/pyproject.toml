@@ -1,0 +1,33 @@
+[project]
+name = "travelbuddy-langgraph-lab"
+version = "0.1.0"
+description = "Day 4 lab scaffold for building a tool-calling travel agent with LangGraph"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "langchain>=1.0.0",
+  "langgraph>=0.6.0",
+  "langchain-core>=0.3.0",
+  "langchain-google-genai>=2.1.0",
+  "langchain-ollama>=0.3.0",
+  "pydantic>=2.8.0",
+  "python-dotenv>=1.0.1",
+  "openai>=1.0.0",
+  "anthropic>=0.34.0",
+  "google-genai>=0.8.0",
+  "requests>=2.31.0",
+  "pyyaml>=6.0",
+  "pypdf>=4.0.0",
+  "tools>=1.0.30",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=9.0.0",
+]
+
+[tool.uv.workspace]
+members = [
+    "Day04-PromptEngineering-ToolCalling",
+    "Day04-C401-Prompt-Engineering-Tool-Calling-Labs",
+]
