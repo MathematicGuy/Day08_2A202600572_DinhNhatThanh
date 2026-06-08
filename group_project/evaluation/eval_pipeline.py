@@ -57,6 +57,20 @@ HYDE_CONFIG = {
     },
 }
 
+JINA_LATE_CHUNKING_CONFIG = {
+    "name": "jina_late_chunking",
+    "env": {
+        "PAGEINDEX_FALLBACK_ENABLED": "0",
+        "RAG_QUERY_MAX_VARIANTS": "3",
+        "RAG_QUERY_MAX_WORDS": "48",
+        "RAG_DISABLE_LLM_QUERY_VARIANTS": "0",
+        "HYDE_ENABLED": "0",
+        "RERANK_METHOD": "cross_encoder",
+        "CHUNKING_METHOD": "jina_late",
+        "JINA_EMBEDDING_MODEL": "jina-embeddings-v3",
+    },
+}
+
 
 def load_golden_dataset() -> list[dict]:
     return json.loads(GOLDEN_DATASET_PATH.read_text(encoding="utf-8"))
@@ -184,7 +198,7 @@ def compare_configs(
     use_ragas: bool = True,
 ) -> dict:
     dataset = golden_dataset or load_golden_dataset()
-    selected_configs = configs or [BASELINE_CONFIG, OPTIMIZED_CONFIG, HYDE_CONFIG]
+    selected_configs = configs or [BASELINE_CONFIG, OPTIMIZED_CONFIG, HYDE_CONFIG, JINA_LATE_CHUNKING_CONFIG]
     return {config["name"]: evaluate_config(dataset, config, use_ragas=use_ragas) for config in selected_configs}
 
 
@@ -217,6 +231,7 @@ def export_results(results: dict, comparison: dict | None = None):
         )
     lines.extend(["", "## Notes", ""])
     lines.append("- PageIndex is not part of the default evaluation configs; keep it as a later last-option fallback only.")
+    lines.append("- `jina_late_chunking` needs `JINA_API_KEY`; otherwise it falls back to local embeddings and the comparison is not a true late-chunking run.")
     lines.append("- If RAGAS is unavailable or judge credentials are missing, the script reports local overlap fallback metrics.")
     RESULTS_PATH.write_text("\n".join(lines), encoding="utf-8")
 

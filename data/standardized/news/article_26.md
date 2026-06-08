@@ -2,7 +2,7 @@
 
 **Source:** https://vov.vn/giai-tri/chua-day-1-thang-3-nghe-si-viet-bi-khoi-to-vi-lien-quan-ma-tuy-gay-chan-dong-post1293496.vov
 
-**Crawled:** 2026-06-08T16:17:43.925486
+**Crawled:** 2026-06-08T17:03:01.725711
 
 ---
 

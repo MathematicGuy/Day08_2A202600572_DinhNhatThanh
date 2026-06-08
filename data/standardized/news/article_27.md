@@ -2,7 +2,7 @@
 
 **Source:** https://vietnamnet.vn/sao-viet-bi-bat-ngoi-tu-mat-danh-tieng-vi-chat-cam-2513746.html
 
-**Crawled:** 2026-06-08T16:17:44.114938
+**Crawled:** 2026-06-08T17:03:01.984372
 
 ---
 

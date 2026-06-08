@@ -2,7 +2,7 @@
 
 **Source:** https://bacninhtv.vn/tin-tuc/16/71109/chau-viet-cuong-nhet-toi-vao-mom-co-gai-vi-khong-muon-lam-nguoi-vo-tam
 
-**Crawled:** 2026-06-08T16:17:41.983022
+**Crawled:** 2026-06-08T17:02:30.043012
 
 ---
 
@@ -85,58 +85,58 @@ Tin cùng chuyên mục
 Bắt nguyên Trưởng ban Tổ chức Tỉnh ủy Sóc Trăng cũ
 Công an thành phố Cần Thơ vừa khởi tố 4 bị can từng công tác tại Ban Tổ chức Tỉnh ủy Sóc Trăng (cũ) do liên quan tới hành vi lợi dụng chức vụ, quyền hạn...
 14:45 - 08/06/2026
-70 lượt xem
+94 lượt xem
 Cơ quan An ninh điều tra Công an tỉnh Bắc Ninh: Khởi tố vụ án “Tổ chức cho người khác ở lại Việt Nam trái phép” xảy ra tại tỉnh Bắc Ninh
 Ngày 27/5/2026, Cơ quan An ninh điều tra Công an tỉnh Bắc Ninh đã ra Quyết định khởi tố vụ án “Tổ chức cho người khác ở lại Việt Nam trái phép” xảy ra tại...
 10:27 - 08/06/2026
-152 lượt xem
+170 lượt xem
 Bắt nhóm người ở Hải Phòng vào Quy Nhơn cho vay rồi đánh đập con nợ
 Ba người từ Hải Phòng vào Quy Nhơn quảng cáo cho vay qua mạng, sau đó đánh đập, giữ người trái pháp luật để ép con nợ trả tiền.
 10:15 - 08/06/2026
-175 lượt xem
+195 lượt xem
 Công an TP.HCM khởi tố chủ Vải áo dài Đất Lành dùng AI đạo nhái thiết kế
 Công an TP.HCM vừa ra quyết định khởi tố vụ án, khởi tố bị can đối với Hoàng Thị Bích Ngọc (chủ thương hiệu Vải áo dài Đất Lành) để điều tra về hành vi...
 08:06 - 08/06/2026
-297 lượt xem
+314 lượt xem
 Thủ đoạn tinh vi của nhóm 'lừa tình' chuyên săn đàn ông thành đạt
 Các nhân sự được đào tạo bài bản, thậm chí có giáo trình nội bộ về cách nhắn tin, xây dựng hình ảnh và xử lý tình huống khi bị nghi ngờ, đánh vào tâm lý...
 16:59 - 07/06/2026
-580 lượt xem
+603 lượt xem
 Có thể bạn quan tâm
+Houthi tấn công, cấm hoạt động hàng hải của Israel trên biển Đỏ
+Thủ tướng Lê Minh Hưng chủ trì lễ đón chính thức Thủ tướng Thái Lan
+Phó Thủ tướng Thường trực Phạm Gia Túc: Kiến tạo các đô thị ASEAN tự cường, lấy người dân làm trung tâm
 Windows 11 sắp cải tiến menu chuột phải
 Bắt nguyên Trưởng ban Tổ chức Tỉnh ủy Sóc Trăng cũ
 10.000 hoa đăng thắp sáng sông Hương
-Điện ảnh Việt Nam với DANAFF 4 nâng tầm khát vọng “từ châu Á ra thế giới”
-VinDynamics và Skild AI hợp tác đưa "bộ não AI" vào thế hệ robot hình người mới
-Hướng tới World Cup 2026: Công nghệ và dữ liệu lên ngôi
 Tin nổi bật
+Thủ tướng Lê Minh Hưng chủ trì lễ đón chính thức Thủ tướng Thái Lan
+Phó Thủ tướng Thường trực Phạm Gia Túc: Kiến tạo các đô thị ASEAN tự cường, lấy người dân làm trung tâm
 Phó Thủ tướng Phạm Thị Thanh Trà dự Hội thảo đặc biệt xác minh thông tin về khu mộ liệt sĩ tập thể tại Công viên Lê Thị Riêng
 Ra mắt Kênh Thể thao VTV6 - Vì một Việt Nam khỏe mạnh
 Thủ tướng Thái Lan đến Hà Nội, bắt đầu thăm chính thức Việt Nam và dự AFF 2026
 Thủ tướng Lê Minh Hưng chủ trì lễ đón chính thức Thủ tướng Campuchia
-Khai mạc trọng thể Đại hội đại biểu toàn quốc Hội Nông dân Việt Nam lần thứ IX
-NAPAS thúc đẩy kết nối QR xuyên biên giới tại Ngày Tài chính số
 Tin xem nhiều
 1.
-Nghệ tươi hay bột nghệ: Loại nào giúp cơ thể hấp thu curcumin tốt hơn? (1,454 lượt xem)
+Nghệ tươi hay bột nghệ: Loại nào giúp cơ thể hấp thu curcumin tốt hơn? (1,471 lượt xem)
 2.
-Người nuôi heo lãi lớn (1,430 lượt xem)
+Người nuôi heo lãi lớn (1,447 lượt xem)
 3.
-Anthropic kêu gọi ngừng phát triển AI trên toàn cầu (1,394 lượt xem)
+Anthropic kêu gọi ngừng phát triển AI trên toàn cầu (1,413 lượt xem)
 4.
-Xây 10.700 nhà ở cho công nhân (1,386 lượt xem)
+Xây 10.700 nhà ở cho công nhân (1,401 lượt xem)
 5.
-Tàu thuyền tìm cách vượt Hormuz giữa rủi ro an ninh (1,375 lượt xem)
+Tàu thuyền tìm cách vượt Hormuz giữa rủi ro an ninh (1,393 lượt xem)
 6.
-HLV Scaloni nói Messi có cơ hội ra sân vài phút (1,370 lượt xem)
+HLV Scaloni nói Messi có cơ hội ra sân vài phút (1,389 lượt xem)
 7.
-Khơi dòng, đẩy sóng du lịch xanh (1,352 lượt xem)
+Khơi dòng, đẩy sóng du lịch xanh (1,368 lượt xem)
 8.
-Mỹ phát cảnh báo mới về dịch Ebola (1,307 lượt xem)
+Điện thoại Android giá rẻ cũng có thể chạy Gemini (1,326 lượt xem)
 9.
-Điện thoại Android giá rẻ cũng có thể chạy Gemini (1,306 lượt xem)
+Mỹ phát cảnh báo mới về dịch Ebola (1,321 lượt xem)
 10.
-Điểm tựa vững chắc cho học sinh vùng biên giới (1,290 lượt xem)
+Điểm tựa vững chắc cho học sinh vùng biên giới (1,309 lượt xem)
 Trang chủ
 Truyền hình -->
 Phát thanh -->
@@ -152,8 +152,8 @@ Email: bacninhdigital@bacninhtv.vn
 Đài Phát thanh và Truyền hình Bắc Ninh
 Tải App BTV PLUS
 441
-577
-398
+582
+874
 Số lượng truy cập trang
 Đài Truyền hình Việt Nam Đài Tiếng nói Việt Nam Cổng Thông tin điện tử tỉnh Bắc Ninh Cổng Dịch vụ công Quốc gia
 Giấy phép số 80/GP-TTĐT do Cục Phát thanh, Truyền hình và Thông tin điện tử - Bộ Thông tin và Truyền thông cấp ngày 25/5/2022.

@@ -2,7 +2,7 @@
 
 **Source:** https://vietnamnet.vn/chi-dan-an-tay-truc-phuong-la-nhung-mat-xich-cuoi-trong-duong-day-ma-tuy-2341934.html
 
-**Crawled:** 2026-06-08T16:17:30.807979
+**Crawled:** 2026-06-08T17:01:47.475851
 
 ---
 

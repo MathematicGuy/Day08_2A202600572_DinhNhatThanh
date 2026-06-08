@@ -2,26 +2,30 @@
 
 ## Overall Scores
 
-| Metric | baseline | optimized_fast |
-|---|---:|---:|
-| faithfulness | 0.695 | 0.811 |
-| answer_relevance | 0.706 | 0.669 |
-| context_recall | 0.770 | 0.702 |
-| context_precision | 0.107 | 0.101 |
-| average | 0.570 | 0.571 |
-| latency_ms | 17048.211 | 8311.574 |
+| Metric | baseline | disable_llm_query_variants | query_variants_and_hyde_enable |
+|---|---:|---:|---:|
+| faithfulness | 0.380 | 0.364 | 0.353 |
+| answer_relevance | 0.468 | 0.444 | 0.480 |
+| context_recall | 0.412 | 0.407 | 0.407 |
+| context_precision | 0.070 | 0.065 | 0.065 |
+| average | 0.333 | 0.320 | 0.327 |
+| latency_ms | 10197.902 | 5286.954 | 12289.104 |
 
 ## Evaluator
 
 - `baseline`: ragas_unavailable_or_missing_api_key
-- `optimized_fast`: ragas_unavailable_or_missing_api_key
+- `disable_llm_query_variants`: ragas_unavailable_or_missing_api_key
+- `query_variants_and_hyde_enable`: ragas_unavailable_or_missing_api_key
 
 ## Worst Performers
 
 | # | Question | Faithfulness | Relevance | Recall | Precision | Latency ms |
 |---|---|---:|---:|---:|---:|---:|
-| 1 | Hình phạt cho tội tàng trữ trái phép chất ma túy theo Điều 249 Bộ luật Hình sự? | 0.718 | 0.556 | 0.676 | 0.128 | 20018.7 |
-| 2 | Luật Phòng chống ma túy 2021 quy định những hình thức cai nghiện nào? | 0.671 | 0.857 | 0.864 | 0.086 | 14077.7 |
+| 1 | Khung hình phạt cơ bản đối với người có hành vi cố ý làm lộ bí mật nhà nước hoặc chiếm đoạt, mua bán, tiêu hủy tài liệu bí mật nhà nước là gì? | 0.000 | 0.000 | 0.000 | 0.000 | 0.0 |
+| 2 | Mức phạt tù cao nhất đối với tội vi phạm quy định về an toàn thực phẩm là bao nhiêu năm và áp dụng trong trường hợp nào? | 0.000 | 0.064 | 0.000 | 0.000 | 0.0 |
+| 3 | Người nào vô ý làm lộ bí mật nhà nước hoặc làm mất vật, tài liệu bí mật nhà nước thì đối mặt với hình phạt nào tại Khoản 1 Điều 338? | 0.000 | 0.067 | 0.000 | 0.000 | 0.0 |
+| 4 | Hành vi gây rối trật tự công cộng thuộc trường hợp nào thì bị phạt tù từ 02 năm đến 07 năm theo quy định tại Điều 318? | 0.000 | 0.100 | 0.000 | 0.000 | 0.0 |
+| 5 | Pháp nhân thương mại phạm tội tài trợ khủng bố (Điều 300) thì hình phạt chính được áp dụng như thế nào? | 0.000 | 0.118 | 0.000 | 0.000 | 0.0 |
 
 ## Notes
 

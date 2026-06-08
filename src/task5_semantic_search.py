@@ -1,13 +1,57 @@
 """Task 5 - Semantic search over the local index."""
 
+import os
+
+import requests
+
 from .local_index import cosine_similarity, ensure_chunks, hash_embedding, metadata_matches
-from .task4_chunking_indexing import EMBEDDING_DIM, EMBEDDING_MODEL
+from .task4_chunking_indexing import (
+    EMBEDDING_DIM,
+    EMBEDDING_MODEL,
+    JINA_EMBEDDING_API_URL,
+    JINA_EMBEDDING_MODEL,
+    JINA_LATE_CHUNKING_METHOD,
+    active_chunking_method,
+)
 
 _MODEL = None
 
 
+def _embed_query_with_jina(query: str) -> list[float] | None:
+    api_key = os.getenv("JINA_API_KEY")
+    if not api_key:
+        return None
+
+    response = requests.post(
+        os.getenv("JINA_EMBEDDING_API_URL", JINA_EMBEDDING_API_URL),
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        },
+        json={
+            "model": os.getenv("JINA_EMBEDDING_MODEL", JINA_EMBEDDING_MODEL),
+            "task": "retrieval.query",
+            "input": [query],
+        },
+        timeout=30,
+    )
+    response.raise_for_status()
+    payload = response.json()
+    data = payload.get("data", [])
+    if not data:
+        return None
+    return data[0].get("embedding")
+
+
 def _embed_query(query: str) -> list[float]:
     global _MODEL
+    if active_chunking_method() == JINA_LATE_CHUNKING_METHOD:
+        try:
+            embedding = _embed_query_with_jina(query)
+            if embedding:
+                return embedding
+        except Exception:
+            pass
     try:
         from sentence_transformers import SentenceTransformer
 

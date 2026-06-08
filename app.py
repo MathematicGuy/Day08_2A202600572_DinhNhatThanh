@@ -76,9 +76,9 @@ st.markdown(
     }
     .st-emotion-cache-4bm6i2.e1wbovuq4 .rag-answer-yes,
     .rag-answer-yes {
-        border-left-color: #16a34a;
-        background: rgba(22, 163, 74, 0.12);
-        color: #166534;
+        border-left-color: #2b9352;
+        background: rgba(96, 134, 110, 0.15);
+        color: #dee5e1;
     }
     .st-emotion-cache-4bm6i2.e1wbovuq4 .rag-answer-no,
     .rag-answer-no {

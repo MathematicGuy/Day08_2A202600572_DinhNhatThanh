@@ -10,13 +10,14 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import re
 from pathlib import Path
 
 PROJECT_DIR = Path(__file__).parent.parent
 STANDARDIZED_DIR = PROJECT_DIR / "data" / "standardized"
 INDEX_DIR = PROJECT_DIR / "data" / "index"
-CHUNKS_PATH = INDEX_DIR / "chunks.json"
+DEFAULT_CHUNKS_PATH = INDEX_DIR / "chunks.json"
 
 TOKEN_RE = re.compile(r"[\wÀ-ỹ]+", re.UNICODE)
 YEAR_RE = re.compile(r"(20\d{2}|19\d{2})")
@@ -30,6 +31,26 @@ SOURCE_LABELS = {
     "nghi-dinh-57-2022": "Nghị định 57/2022/NĐ-CP",
     "nghi-dinh-90-2024": "Nghị định 90/2024/NĐ-CP",
 }
+
+
+def _sanitize_index_component(value: str) -> str:
+    cleaned = re.sub(r"[^a-zA-Z0-9._-]+", "-", value.strip().lower())
+    return cleaned.strip("-") or "default"
+
+
+def active_index_signature() -> str:
+    chunking_method = os.getenv("CHUNKING_METHOD", "recursive")
+    if chunking_method == "jina_late":
+        embedding_model = os.getenv("JINA_EMBEDDING_MODEL", "jina-embeddings-v3")
+        return f"{_sanitize_index_component(chunking_method)}-{_sanitize_index_component(embedding_model)}"
+    return _sanitize_index_component(chunking_method)
+
+
+def chunks_path() -> Path:
+    signature = active_index_signature()
+    if signature == "recursive":
+        return DEFAULT_CHUNKS_PATH
+    return INDEX_DIR / f"chunks-{signature}.json"
 
 
 def tokenize(text: str) -> list[str]:
@@ -119,14 +140,16 @@ def cosine_similarity(left: list[float], right: list[float]) -> float:
     return float(sum(a * b for a, b in zip(left, right)))
 
 
-def save_chunks(chunks: list[dict]) -> None:
+def save_chunks(chunks: list[dict], path: Path | None = None) -> None:
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
-    CHUNKS_PATH.write_text(json.dumps(chunks, ensure_ascii=False, indent=2), encoding="utf-8")
+    target_path = path or chunks_path()
+    target_path.write_text(json.dumps(chunks, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def load_chunks() -> list[dict]:
-    if CHUNKS_PATH.exists():
-        return json.loads(CHUNKS_PATH.read_text(encoding="utf-8"))
+def load_chunks(path: Path | None = None) -> list[dict]:
+    target_path = path or chunks_path()
+    if target_path.exists():
+        return json.loads(target_path.read_text(encoding="utf-8"))
     return []
 
 
