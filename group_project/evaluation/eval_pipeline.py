@@ -50,7 +50,7 @@ HYDE_CONFIG = {
     "name": "query_variants_and_hyde_enable",
     "env": {
         "PAGEINDEX_FALLBACK_ENABLED": "0",
-        "RAG_QUERY_MAX_VARIANTS": "1",
+        "RAG_QUERY_MAX_VARIANTS": "3",
         "RAG_QUERY_MAX_WORDS": "32",
         "RAG_DISABLE_LLM_QUERY_VARIANTS": "1",
         "HYDE_ENABLED": "1",
@@ -62,7 +62,7 @@ JINA_LATE_CHUNKING_CONFIG = {
     "name": "jina_late_chunking",
     "env": {
         "PAGEINDEX_FALLBACK_ENABLED": "0",
-        "RAG_QUERY_MAX_VARIANTS": "3",
+        "RAG_QUERY_MAX_VARIANTS": "1",
         "RAG_QUERY_MAX_WORDS": "48",
         "RAG_DISABLE_LLM_QUERY_VARIANTS": "0",
         "HYDE_ENABLED": "0",

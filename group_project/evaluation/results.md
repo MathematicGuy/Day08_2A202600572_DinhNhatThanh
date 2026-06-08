@@ -4,19 +4,19 @@
 
 | Metric | baseline | disable_llm_query_variants | query_variants_and_hyde_enable | jina_late_chunking |
 |---|---:|---:|---:|---:|
-| faithfulness | 0.375 | 0.366 | 0.358 | 0.367 |
-| answer_relevance | 0.461 | 0.466 | 0.476 | 0.464 |
-| context_recall | 0.403 | 0.402 | 0.402 | 0.412 |
-| context_precision | 0.062 | 0.064 | 0.064 | 0.068 |
-| average | 0.325 | 0.324 | 0.325 | 0.328 |
-| latency_ms | 8388.268 | 4258.791 | 10320.101 | 11303.582 |
+| faithfulness | 0.373 | 0.362 | 0.361 | 0.386 |
+| answer_relevance | 0.464 | 0.473 | 0.461 | 0.449 |
+| context_recall | 0.410 | 0.402 | 0.402 | 0.411 |
+| context_precision | 0.063 | 0.064 | 0.064 | 0.069 |
+| average | 0.328 | 0.325 | 0.322 | 0.329 |
+| latency_ms | 5923.555 | 4396.748 | 10380.857 | 5656.993 |
 
 ## Evaluator
 
-- `baseline`: ragas_unavailable_or_missing_api_key
-- `disable_llm_query_variants`: ragas_unavailable_or_missing_api_key
-- `query_variants_and_hyde_enable`: ragas_unavailable_or_missing_api_key
-- `jina_late_chunking`: ragas_unavailable_or_missing_api_key
+- `baseline`: ragas_unavailable:ModuleNotFoundError: No module named 'langchain_community.chat_models.vertexai'
+- `disable_llm_query_variants`: ragas_unavailable:ModuleNotFoundError: No module named 'langchain_community.chat_models.vertexai'
+- `query_variants_and_hyde_enable`: ragas_unavailable:ModuleNotFoundError: No module named 'langchain_community.chat_models.vertexai'
+- `jina_late_chunking`: ragas_unavailable:ModuleNotFoundError: No module named 'langchain_community.chat_models.vertexai'
 
 ## Worst Performers
 
