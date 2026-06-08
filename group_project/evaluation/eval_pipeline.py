@@ -1,20 +1,49 @@
-"""Local RAG evaluation pipeline with 4 RAG-style metrics and A/B comparison."""
+"""RAGAS-first RAG evaluation with local fallback metrics and A/B comparison."""
 
 from __future__ import annotations
 
 import json
+import os
+import statistics
 import sys
+import time
 from pathlib import Path
 
 PROJECT_DIR = Path(__file__).parents[2]
 sys.path.insert(0, str(PROJECT_DIR))
 
+from src.benchmark_latency import temporary_env
 from src.local_index import tokenize
 from src.task10_generation import generate_with_citation
 from src.task9_retrieval_pipeline import retrieve
 
 GOLDEN_DATASET_PATH = Path(__file__).parent / "golden_dataset.json"
 RESULTS_PATH = Path(__file__).parent / "results.md"
+RAW_RESULTS_PATH = Path(__file__).parent / "ragas_results.json"
+
+BASELINE_CONFIG = {
+    "name": "baseline",
+    "env": {
+        "PAGEINDEX_FALLBACK_ENABLED": "0",
+        "RAG_QUERY_MAX_VARIANTS": "3",
+        "RAG_QUERY_MAX_WORDS": "48",
+        "RAG_DISABLE_LLM_QUERY_VARIANTS": "0",
+        "HYDE_ENABLED": "0",
+        "RERANK_METHOD": "cross_encoder",
+    },
+}
+
+OPTIMIZED_CONFIG = {
+    "name": "optimized_fast",
+    "env": {
+        "PAGEINDEX_FALLBACK_ENABLED": "0",
+        "RAG_QUERY_MAX_VARIANTS": "1",
+        "RAG_QUERY_MAX_WORDS": "32",
+        "RAG_DISABLE_LLM_QUERY_VARIANTS": "1",
+        "HYDE_ENABLED": "0",
+        "RERANK_METHOD": "cross_encoder",
+    },
+}
 
 
 def load_golden_dataset() -> list[dict]:
@@ -29,87 +58,167 @@ def _overlap_score(left: str, right: str) -> float:
     return len(left_tokens & right_tokens) / len(left_tokens)
 
 
-def _score_case(item: dict, answer: str, sources: list[dict]) -> dict:
+def _local_score_case(item: dict, answer: str, sources: list[dict]) -> dict:
     contexts = "\n".join(source.get("content", "") for source in sources)
     expected_context = item.get("expected_context", "")
     expected_answer = item.get("expected_answer", "")
-    return {
+    scores = {
         "faithfulness": _overlap_score(answer, contexts),
         "answer_relevance": _overlap_score(expected_answer, answer),
         "context_recall": _overlap_score(expected_answer + " " + expected_context, contexts),
         "context_precision": _overlap_score(contexts, expected_answer + " " + expected_context),
     }
+    scores["average"] = sum(scores.values()) / max(1, len(scores))
+    return scores
 
 
-def evaluate_config(golden_dataset: list[dict], name: str, use_reranking: bool) -> dict:
-    rows = []
-    for item in golden_dataset:
-        if use_reranking:
-            result = generate_with_citation(item["question"])
-            answer = result["answer"]
-            sources = result["sources"]
-        else:
-            sources = retrieve(item["question"], top_k=5, use_reranking=False)
-            answer = " ".join(source.get("content", "") for source in sources[:1])
-        scores = _score_case(item, answer, sources)
-        rows.append({"question": item["question"], "answer": answer, "sources": sources, **scores})
-
-    summary = {}
-    for metric in ["faithfulness", "answer_relevance", "context_recall", "context_precision"]:
-        summary[metric] = sum(row[metric] for row in rows) / max(1, len(rows))
-    summary["average"] = sum(summary.values()) / 4
-    return {"name": name, "summary": summary, "rows": rows}
-
-
-def compare_configs(rag_pipeline=None, golden_dataset: list[dict] | None = None):
-    dataset = golden_dataset or load_golden_dataset()
+def _run_pipeline_case(item: dict, top_k: int = 5, generate: bool = True) -> dict:
+    started = time.perf_counter()
+    if generate:
+        result = generate_with_citation(item["question"], top_k=top_k)
+        answer = result["answer"]
+        sources = result["sources"]
+        timings = result.get("timings", {})
+    else:
+        sources = retrieve(item["question"], top_k=top_k)
+        answer = " ".join(source.get("content", "") for source in sources[:1])
+        timings = sources[0].get("metadata", {}).get("timings", {}) if sources else {}
+    latency_ms = (time.perf_counter() - started) * 1000
     return {
-        "hybrid_rerank": evaluate_config(dataset, "hybrid_rerank", use_reranking=True),
-        "dense_like_no_rerank": evaluate_config(dataset, "dense_like_no_rerank", use_reranking=False),
+        "question": item["question"],
+        "answer": answer,
+        "contexts": [source.get("content", "") for source in sources],
+        "ground_truth": item.get("expected_answer", ""),
+        "expected_context": item.get("expected_context", ""),
+        "sources": sources,
+        "latency_ms": latency_ms,
+        "timings": timings,
     }
+
+
+def _ragas_available() -> bool:
+    if not (os.getenv("OPENAI_API_KEY") or os.getenv("OPENROUTER_API_KEY")):
+        return False
+    try:
+        import ragas  # noqa: F401
+        import datasets  # noqa: F401
+    except Exception:
+        return False
+    return True
+
+
+def _evaluate_rows_with_ragas(rows: list[dict]) -> tuple[list[dict], str]:
+    if not _ragas_available():
+        return rows, "ragas_unavailable_or_missing_api_key"
+
+    try:
+        from datasets import Dataset
+        from ragas import evaluate
+        from ragas.metrics import answer_relevancy, context_precision, context_recall, faithfulness
+
+        dataset = Dataset.from_list(
+            [
+                {
+                    "question": row["question"],
+                    "answer": row["answer"],
+                    "contexts": row["contexts"],
+                    "ground_truth": row["ground_truth"],
+                }
+                for row in rows
+            ]
+        )
+        result = evaluate(
+            dataset,
+            metrics=[faithfulness, answer_relevancy, context_precision, context_recall],
+        )
+        frame = result.to_pandas()
+        for idx, row in enumerate(rows):
+            if idx >= len(frame):
+                continue
+            scored = frame.iloc[idx].to_dict()
+            row["faithfulness"] = float(scored.get("faithfulness", row.get("faithfulness", 0.0)) or 0.0)
+            row["answer_relevance"] = float(scored.get("answer_relevancy", scored.get("answer_relevance", row.get("answer_relevance", 0.0))) or 0.0)
+            row["context_precision"] = float(scored.get("context_precision", row.get("context_precision", 0.0)) or 0.0)
+            row["context_recall"] = float(scored.get("context_recall", row.get("context_recall", 0.0)) or 0.0)
+            row["average"] = statistics.mean([row["faithfulness"], row["answer_relevance"], row["context_precision"], row["context_recall"]])
+        return rows, "ragas"
+    except Exception as exc:
+        for row in rows:
+            row["ragas_error"] = type(exc).__name__
+        return rows, f"ragas_error:{type(exc).__name__}"
+
+
+def evaluate_config(golden_dataset: list[dict], config: dict, top_k: int = 5, use_ragas: bool = True) -> dict:
+    rows = []
+    with temporary_env(config.get("env", {})):
+        for item in golden_dataset:
+            row = _run_pipeline_case(item, top_k=top_k, generate=True)
+            row.update(_local_score_case(item, row["answer"], row["sources"]))
+            rows.append(row)
+
+    evaluator = "local_overlap"
+    if use_ragas:
+        rows, evaluator = _evaluate_rows_with_ragas(rows)
+
+    metrics = ["faithfulness", "answer_relevance", "context_recall", "context_precision", "average", "latency_ms"]
+    summary = {metric: statistics.mean([float(row.get(metric, 0.0)) for row in rows]) if rows else 0.0 for metric in metrics}
+    return {"name": config["name"], "env": config.get("env", {}), "evaluator": evaluator, "summary": summary, "rows": rows}
+
+
+def compare_configs(
+    rag_pipeline=None,
+    golden_dataset: list[dict] | None = None,
+    configs: list[dict] | None = None,
+    use_ragas: bool = True,
+) -> dict:
+    dataset = golden_dataset or load_golden_dataset()
+    selected_configs = configs or [BASELINE_CONFIG, OPTIMIZED_CONFIG]
+    return {config["name"]: evaluate_config(dataset, config, use_ragas=use_ragas) for config in selected_configs}
 
 
 def export_results(results: dict, comparison: dict | None = None):
     configs = comparison or results
-    a = configs["hybrid_rerank"]["summary"]
-    b = configs["dense_like_no_rerank"]["summary"]
-    metrics = ["faithfulness", "answer_relevance", "context_recall", "context_precision", "average"]
+    RAW_RESULTS_PATH.write_text(json.dumps(configs, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    names = list(configs)
+    metrics = ["faithfulness", "answer_relevance", "context_recall", "context_precision", "average", "latency_ms"]
 
     lines = ["# RAG Evaluation Results", "", "## Overall Scores", ""]
-    lines.append("| Metric | Hybrid + Rerank | No Rerank | Delta |")
-    lines.append("|---|---:|---:|---:|")
+    lines.append("| Metric | " + " | ".join(names) + " |")
+    lines.append("|---" + "|---:" * len(names) + "|")
     for metric in metrics:
-        lines.append(f"| {metric} | {a[metric]:.3f} | {b[metric]:.3f} | {a[metric] - b[metric]:+.3f} |")
+        lines.append("| " + metric + " | " + " | ".join(f"{configs[name]['summary'].get(metric, 0.0):.3f}" for name in names) + " |")
 
-    worst = sorted(configs["hybrid_rerank"]["rows"], key=lambda row: row["average"] if "average" in row else row["context_recall"])[:3]
-    lines.extend(["", "## A/B Comparison", ""])
-    lines.append("Config A uses hybrid retrieval, RRF merge, reranking, citation generation, and fallback.")
-    lines.append("Config B disables reranking and uses the first retrieved chunk as an extractive answer.")
+    baseline_name = names[0] if names else ""
+    worst = sorted(configs.get(baseline_name, {}).get("rows", []), key=lambda row: row.get("average", 0.0))[:5]
+    lines.extend(["", "## Evaluator", ""])
+    for name in names:
+        lines.append(f"- `{name}`: {configs[name].get('evaluator', 'unknown')}")
+
     lines.extend(["", "## Worst Performers", ""])
-    lines.append("| # | Question | Faithfulness | Relevance | Recall | Precision |")
-    lines.append("|---|---|---:|---:|---:|---:|")
+    lines.append("| # | Question | Faithfulness | Relevance | Recall | Precision | Latency ms |")
+    lines.append("|---|---|---:|---:|---:|---:|---:|")
     for i, row in enumerate(worst, 1):
         lines.append(
-            f"| {i} | {row['question']} | {row['faithfulness']:.3f} | "
-            f"{row['answer_relevance']:.3f} | {row['context_recall']:.3f} | {row['context_precision']:.3f} |"
+            f"| {i} | {row['question']} | {row.get('faithfulness', 0.0):.3f} | "
+            f"{row.get('answer_relevance', 0.0):.3f} | {row.get('context_recall', 0.0):.3f} | "
+            f"{row.get('context_precision', 0.0):.3f} | {row.get('latency_ms', 0.0):.1f} |"
         )
-    lines.extend(["", "## Recommendations", ""])
-    lines.append("- Add more official full-text PDFs/DOCX to improve legal recall.")
-    lines.append("- Enable OpenRouter and PageIndex keys for better generation and vectorless fallback.")
-    lines.append("- Expand news articles with full crawled text before final demo.")
+    lines.extend(["", "## Notes", ""])
+    lines.append("- PageIndex is not part of the default evaluation configs; keep it as a later last-option fallback only.")
+    lines.append("- If RAGAS is unavailable or judge credentials are missing, the script reports local overlap fallback metrics.")
     RESULTS_PATH.write_text("\n".join(lines), encoding="utf-8")
 
 
 def evaluate_with_deepeval(rag_pipeline, golden_dataset: list[dict]) -> dict:
-    return evaluate_config(golden_dataset, "hybrid_rerank", use_reranking=True)
+    return evaluate_config(golden_dataset, BASELINE_CONFIG, use_ragas=False)
 
 
 def evaluate_with_ragas(rag_pipeline, golden_dataset: list[dict]) -> dict:
-    return evaluate_config(golden_dataset, "hybrid_rerank", use_reranking=True)
+    return evaluate_config(golden_dataset, BASELINE_CONFIG, use_ragas=True)
 
 
 def evaluate_with_trulens(rag_pipeline, golden_dataset: list[dict]) -> dict:
-    return evaluate_config(golden_dataset, "hybrid_rerank", use_reranking=True)
+    return evaluate_config(golden_dataset, BASELINE_CONFIG, use_ragas=False)
 
 
 if __name__ == "__main__":

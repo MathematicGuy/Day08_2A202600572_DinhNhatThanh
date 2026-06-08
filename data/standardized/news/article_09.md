@@ -2,7 +2,7 @@
 
 **Source:** https://www.mps.gov.vn/bai-viet/khao-sat-huong-dan-thuc-hien-diem-chuong-trinh-muc-tieu-quoc-gia-phong-chong-ma-tuy-den-nam-2030-tai-tinh-nghe-an-1769516110
 
-**Crawled:** 2026-06-08T11:18:53.730471
+**Crawled:** 2026-06-08T16:17:33.877906
 
 ---
 

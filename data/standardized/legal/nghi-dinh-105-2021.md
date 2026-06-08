@@ -2254,7 +2254,7 @@ Mẫu số 02A
 ..................1 
 ..................2 
  
-Số:…/n ăm/GPNK-tên viết tắt3 
+Số:…/năm/GPNK-tên viết tắt3 
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc 
  
@@ -2275,7 +2275,7 @@ QUYẾT ĐỊNH:
 số fax:................................, Gi ấy phép kinh doanh s ố:............................................. 
 do:.......................... cấp ngày....... tháng........ năm..., được phép: 
 1. Nhập khẩu (xuất khẩu):...................................................................................4 
-2. Mục đích nhập khẩu (xuất khẩu)8: ………........................ ............................. 
+2. Mục đích nhập khẩu (xuất khẩu)8: ………..................................................... 
 3. Cửa khẩu nhập khẩu (xuất khẩu):................................................................... 
 4. Phương tiện và điều kiện vận chuyển:............................................................ 
 5. Thời gian thực hiện nhập khẩu (xuất khẩu) dự kiến:...................................... 
@@ -2686,7 +2686,7 @@ Mẫu số 06
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM 
 Độc lập - Tự do - Hạnh phúc 
  
-……. , ngày…… tháng… n ăm…….  
+……., ngày…… tháng… năm……. 
  
 BẢN TƯỜNG TRÌNH 
 Họ và tên: .....................................................  Giới tính: .....................................  
@@ -2695,7 +2695,7 @@ Ngày, tháng, năm sinh:..../..../...... Nơi sinh: ...........................
 Quê quán: ............................................................................................................  
 Nơi thường trú/tạm trú: .......................................................................................  
 Nơi ở hiện tại:......................................................................................................  
-Số CMND/CCCD/Hộ chiếu:………..; ngày c ấp: ..../..../........; nơi cấp:.............  
+Số CMND/CCCD/Hộ chiếu:………..; ngày cấp: ..../..../........; nơi cấp:.............  
 Dân tộc: .......................... Tôn giáo:...............  Trình độ học vấn:......................  
 Nghề nghiệp: .......................................................................................................  
 Nơi làm việc/học tập: ..........................................................................................  
@@ -2738,7 +2738,7 @@ Căn c ứ Lu ật T ổ ch ức chính quy ền địa ph ương ngày 19 thán
 Luật sửa đổi, bổ sung m ột số điều của Luật Tổ chức Chính ph ủ và Lu ật Tổ chức 
 chính quyền địa phương ngày 22 tháng 11 năm 2019; 
 Căn cứ Luật Phòng, chống ma túy ngày 30 tháng 3 năm 2021; 
-Căn c ứ Ngh ị định s ố……/2021/N Đ-CP ngày… tháng… n ăm 2021 c ủa Chính 
+Căn c ứ Ngh ị định s ố……/2021/NĐ-CP ngày… tháng… n ăm 2021 c ủa Chính 
 phủ quy định chi ti ết và h ướng dẫn thi hành m ột số điều của Luật Phòng, ch ống 
 ma túy; 
 Xét đề nghị của Trưởng Công an.........................................................................1 
@@ -2831,7 +2831,7 @@ Ngày, tháng, năm sinh:..../..../...... Nơi sinh:............................
 Quê quán:..............................................................................................................  
 Nơi thường trú/tạm trú:.........................................................................................  
 Nơi ở hiện tại: .......................................................................................................  
-Số CMND/CCCD/Hộ chiếu:……..; ngày c ấp:..../..../........; nơi cấp: ...................  
+Số CMND/CCCD/Hộ chiếu:……..; ngày cấp:..../..../........; nơi cấp: ...................  
 Dân tộc:.................... Tôn giáo:.....................  Trình độ học vấn: ........................  
 Nghề nghiệp:.........................................................................................................  
 Nơi làm việc/học tập:............................................................................................  
@@ -2880,7 +2880,7 @@ CÔNG BÁO/Số 1047 + 1048/Ngày 20-12-2021 81
  
 Mẫu số 09 
 ....................... 
-UBND……… 1 
+UBND………1 
  
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
 Độc lập - Tự do - Hạnh phúc 
@@ -2897,7 +2897,7 @@ Căn c ứ Lu ật T ổ ch ức chính quy ền địa ph ương ngày 19 thán
 Luật sửa đổi, bổ sung m ột số điều của Luật Tổ chức Chính ph ủ và Lu ật Tổ chức 
 chính quyền địa phương ngày 22 tháng 11 năm 2019; 
 Căn cứ Luật Phòng, chống ma túy ngày 30 tháng 3 năm 2021; 
-Căn cứ Nghị định số…/2021/N Đ-CP ngày… tháng… n ăm 2021 của Chính phủ 
+Căn cứ Nghị định số…/2021/NĐ-CP ngày… tháng… năm 2021 của Chính phủ 
 quy định chi tiết và hướng dẫn thi hành một số điều của Luật Phòng, chống ma túy; 
 Căn cứ Quyết định áp d ụng biện pháp qu ản lý ng ười sử dụng trái phép ch ất 
 ma túy; 
@@ -2968,7 +2968,7 @@ CÔNG BÁO/Số 1047 + 1048/Ngày 20-12-2021 83
  
 Mẫu số 10 
 ........................ 
-UBND………. 1 
+UBND……….1 
  
 CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM 
 Độc lập - Tự do - Hạnh phúc 
@@ -2984,7 +2984,7 @@ Căn c ứ Lu ật T ổ ch ức chính quy ền địa ph ương ngày 19 thán
 Luật sửa đổi, bổ sung m ột số điều của Luật Tổ chức Chính ph ủ và Lu ật Tổ chức 
 chính quyền địa phương ngày 22 tháng 11 năm 2019; 
 Căn cứ Luật Phòng, chống ma túy ngày 30 tháng 3 năm 2021; 
-Căn c ứ Ngh ị định s ố……/2021/N Đ-CP ngày… tháng… n ăm 2021 c ủa Chính 
+Căn c ứ Ngh ị định s ố……/2021/NĐ-CP ngày… tháng… n ăm 2021 c ủa Chính 
 phủ quy định chi ti ết và h ướng dẫn thi hành m ột số điều của Luật Phòng, ch ống 
 ma túy; 
 Căn cứ Quyết định áp d ụng biện pháp quản lý ng ười sử dụng trái phép ch ất 

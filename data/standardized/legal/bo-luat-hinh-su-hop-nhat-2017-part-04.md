@@ -1302,7 +1302,7 @@ h) Tái phạm nguy hiểm.
 339 Kho ản này đượ c s ửa đổi, b ổ sung theo quy định t ại kho ản 124 Điều 1 c ủa Lu ật 
 số 12/2017/QH14 sửa đổi, bổ sung một số điều của Bộ luật Hình sự số 100/2015/QH13, có hiệu 
 lực kể từ ngày 01 tháng 01 năm 2018. 
-340 Cụm từ “Gây rối loạn tâm th ần và hành vi c ủa người bán dâm t ừ 11% đến 45%” được 
+340 Cụm từ “Gây r ối loạn tâm th ần và hành vi c ủa người bán dâm t ừ 11% đến 45%” được 
 thay thế bằng cụm từ “Gây rối loạn tâm thần và hành vi c ủa người bán dâm mà t ỷ lệ tổn thương 
 cơ thể từ 31% đến 60%” theo quy định tại điểm r khoản 2 Điều 2 của Luật số 12/2017/QH14 sửa 
 đổi, b ổ sung m ột s ố điều c ủa B ộ lu ật Hình s ự s ố 100/2015/QH13, có hi ệu l ực k ể t ừ ngày 01 
@@ -1339,8 +1339,8 @@ d) Phạm tội 02 lần trở lên;
 e) Thu lợi bất chính từ 100.000.000 đồng đến dưới 500.000.000 đồng; 
 g) Tái phạm nguy hiểm. 
                                            
-341 Cụm từ “Gây rối loạn tâm th ần và hành vi c ủa người bán dâm 46% tr ở lên” được thay 
-thế bằng cụm từ “Gây rối loạn tâm th ần và hành vi c ủa người bán dâm mà t ỷ lệ tổn thương cơ 
+341 Cụm từ “Gây r ối loạn tâm th ần và hành vi c ủa người bán dâm 46% tr ở lên” được thay 
+thế bằng cụm từ “Gây r ối loạn tâm th ần và hành vi c ủa người bán dâm mà t ỷ lệ tổn thương cơ 
 thể 61% trở lên” theo quy định tại điểm r khoản 2 Điều 2 của Luật số 12/2017/QH14 sửa đổi, bổ 
 sung một số điều của Bộ luật Hình s ự số 100/2015/QH13, có hi ệu lực kể từ ngày 01 tháng 01 
 năm 2018.
@@ -1499,7 +1499,7 @@ lực kể từ ngày 01 tháng 01 năm 2018.
 số 12/2017/QH14 sửa đổi, bổ sung một số điều của Bộ luật Hình sự số 100/2015/QH13, có hiệu 
 lực kể từ ngày 01 tháng 01 năm 2018. 
 346 Cụm t ừ “Ph ạm t ội trong nh ững tr ường h ợp sau đây” đượ c thay th ế b ằng c ụm t ừ 
-“Phạm t ội thu ộc m ột trong các tr ường h ợp sau đây” theo quy định t ại điểm s kho ản 2 
+“Ph ạm t ội thu ộc m ột trong các tr ường h ợp sau đây” theo quy định t ại điểm s kho ản 2 
 Điều 2 c ủa Lu ật s ố 12/2017/QH14 s ửa đổi, b ổ sung m ột s ố điều c ủa B ộ lu ật Hình s ự 
 số 100/2015/QH13, có hi ệu l ực k ể t ừ ngày 01 tháng 01 n ăm 2018.
 
@@ -2035,7 +2035,7 @@ CÁC TỘI PHẠM KHÁC VỀ CHỨC VỤ
 1. Người nào có ch ức vụ, quyền hạn vì thiếu trách nhiệm mà không th ực hiện 
 hoặc thực hiện không đúng nhiệm vụ được giao thu ộc một trong các tr ường hợp 
                                            
-364 Cụm từ “05 giấy tờ giả” được thay th ế bằng cụm từ “06 giấy tờ giả” theo quy định tại 
+364 Cụm từ “05 gi ấy tờ giả” được thay th ế bằng cụm từ “06 gi ấy tờ giả” theo quy định tại 
 điểm t khoản 2 Điều 2 của Luật số 12/2017/QH14 sửa đổi, bổ sung một số điều của Bộ luật Hình 
 sự số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
 365 Từ “từ” được bãi bỏ theo quy định tại điểm h khoản 3 Điều 2 của Luật số 12/2017/QH14 
@@ -2305,7 +2305,7 @@ của Bộ luật Hình sự số 100/2015/QH13, có hiệu lực kể từ ngà
 374 Cụm từ “05 người trở lên” được thay thế bằng cụm từ “06 người trở lên” theo quy định 
 tại điểm t kho ản 2 Điều 2 c ủa Luật số 12/2017/QH14 s ửa đổi, bổ sung m ột số điều của Bộ luật 
 Hình sự số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
-375 C ụm t ừ “tội ph ạm đặc bi ệt nghiêm tr ọng” được thay th ế b ằng c ụm t ừ “tội khác là t ội 
+375 C ụm t ừ “t ội ph ạm đặc bi ệt nghiêm tr ọng” được thay th ế b ằng c ụm t ừ “t ội khác là t ội 
 phạm đặc biệt nghiêm trọng” theo quy định tại điểm t khoản 2 Điều 2 của Luật số 12/2017/QH14 
 sửa đổi, bổ sung một số điều của Bộ luật Hình sự số 100/2015/QH13, có hi ệu lực kể từ ngày 01 
 tháng 01 năm 2018.
@@ -2491,7 +2491,7 @@ người thực hiện tội phạm rất nghiêm trọng hoặc tội phạm đ
 383 Từ “hỏi cung” được thay thế bằng cụm từ “người bị hỏi cung” theo quy định tại điểm u 
 khoản 2 Điều 2 c ủa Luật số 12/2017/QH14 s ửa đổi, bổ sung m ột số điều của Bộ luật Hình s ự 
 số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
-384 Cụm t ừ “Dẫn đến” được b ổ sung theo quy định t ại điểm t kho ản 1 Điều 2 c ủa Lu ật 
+384 Cụm t ừ “D ẫn đến” được b ổ sung theo quy định t ại điểm t kho ản 1 Điều 2 c ủa Lu ật 
 số 12/2017/QH14 sửa đổi, bổ sung một số điều của Bộ luật Hình sự số 100/2015/QH13, có hiệu 
 lực kể từ ngày 01 tháng 01 năm 2018. 
 385 Cụm từ “; người thực hiện tội phạm ít nghiêm tr ọng hoặc tội phạm nghiêm tr ọng” được 
@@ -3037,7 +3037,7 @@ của Bộ luật này, thì bị phạt cải tạo không giam giữ đến 02
 cụm từ “Gây rối loạn tâm thần và hành vi c ủa nạn nhân mà tỷ lệ tổn thương cơ thể 61% trở lên” 
 theo quy định tại điểm e khoản 2 Điều 2 của Luật số 12/2017/QH14 sửa đổi, bổ sung một số điều 
 của Bộ luật Hình sự số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
-403 C ụm t ừ “Điều 135” được thay th ế b ằng c ụm t ừ “Điều 134” theo quy định t ại điểm v 
+403 C ụm t ừ “ Điều 135” được thay th ế b ằng c ụm t ừ “ Điều 134” theo quy định t ại điểm v 
 khoản 2 Điều 2 c ủa Luật số 12/2017/QH14 s ửa đổi, bổ sung m ột số điều của Bộ luật Hình s ự 
 số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018.
 

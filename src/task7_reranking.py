@@ -1,5 +1,9 @@
 """Task 7 - Reranking."""
 
+import os
+
+import requests
+
 from .local_index import cosine_similarity, hash_embedding, tokenize
 
 
@@ -81,11 +85,48 @@ def rerank(
 ) -> list[dict]:
     if not candidates:
         return []
+    if method == "jina":
+        return rerank_jina_api(query, candidates, top_k=top_k)
     if method == "rrf":
         return rerank_rrf([candidates], top_k=top_k)
     if method == "mmr":
         return rerank_mmr(hash_embedding(query), candidates, top_k=top_k)
     return rerank_cross_encoder(query, candidates, top_k=top_k)
+
+
+def rerank_jina_api(query: str, candidates: list[dict], top_k: int = 5) -> list[dict]:
+    """Use Jina hosted rerank when configured; otherwise use local reranking."""
+    api_key = os.getenv("JINA_API_KEY")
+    if not api_key:
+        return rerank_cross_encoder(query, candidates, top_k=top_k)
+
+    response = requests.post(
+        "https://api.jina.ai/v1/rerank",
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        },
+        json={
+            "model": os.getenv("JINA_RERANKER_MODEL", "jinaai/jina-reranker-v2-base-multilingual"),
+            "query": query,
+            "documents": [candidate.get("content", "") for candidate in candidates],
+            "top_n": top_k,
+            "return_documents": False,
+        },
+        timeout=30,
+    )
+    response.raise_for_status()
+    payload = response.json()
+    reranked = []
+    for result in payload.get("results", [])[:top_k]:
+        idx = result.get("index")
+        if idx is None or idx >= len(candidates):
+            continue
+        item = candidates[idx].copy()
+        item["score"] = float(result.get("relevance_score", result.get("score", item.get("score", 0.0))))
+        item["metadata"] = {**item.get("metadata", {}), "reranker": "jina"}
+        reranked.append(item)
+    return reranked or rerank_cross_encoder(query, candidates, top_k=top_k)
 
 
 if __name__ == "__main__":

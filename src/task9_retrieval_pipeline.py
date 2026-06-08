@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import time
 from collections import defaultdict
 
 from .task5_semantic_search import semantic_search
@@ -12,7 +13,8 @@ from .task8_pageindex_vectorless import pageindex_search
 
 SCORE_THRESHOLD = 0.3
 DEFAULT_TOP_K = 5
-RERANK_METHOD = "cross_encoder"
+RERANK_METHOD = os.getenv("RERANK_METHOD", "cross_encoder")
+QUERY_TRANSFORM_CACHE: dict[tuple, dict] = {}
 
 LEGAL_KEYWORDS = {
     "luật", "điều", "nghị định", "hình phạt", "tội", "pháp luật", "cai nghiện",
@@ -129,13 +131,40 @@ def _openrouter_client():
         return None
 
 
+def _env_int(name: str, default: int) -> int:
+    try:
+        return max(0, int(os.getenv(name, str(default))))
+    except ValueError:
+        return default
+
+
+def _env_bool(name: str, default: bool = False) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _limit_words(text: str, max_words: int) -> str:
+    if max_words <= 0:
+        return text.strip()
+    words = text.split()
+    if len(words) <= max_words:
+        return text.strip()
+    return " ".join(words[:max_words]).strip()
+
+
 def _llm_variants(query: str, n: int = 4) -> list[str]:
+    if _env_bool("RAG_DISABLE_LLM_QUERY_VARIANTS", False):
+        return []
+
     client = _openrouter_client()
     if client is None:
         return []
+    n = min(n, _env_int("RAG_QUERY_MAX_VARIANTS", n))
     try:
         response = client.chat.completions.create(
-            model=os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini"),
+            model=os.getenv("OPENROUTER_MODEL", "deepseek/deepseek-v4-flash"),
             messages=[
                 {
                     "role": "user",
@@ -149,16 +178,18 @@ def _llm_variants(query: str, n: int = 4) -> list[str]:
             temperature=0.2,
         )
         content = response.choices[0].message.content or ""
-        return [line.strip("-• \t") for line in content.splitlines() if line.strip()][:n]
+        max_words = _env_int("RAG_QUERY_MAX_WORDS", 48)
+        return [_limit_words(line.strip("-• \t"), max_words) for line in content.splitlines() if line.strip()][:n]
     except Exception:
         return []
 
 
 def _fallback_multi_query(query: str) -> list[str]:
-    variants = [query]
+    max_words = _env_int("RAG_QUERY_MAX_WORDS", 48)
+    variants = [_limit_words(query, max_words)]
     variants.append(f"{query} quy định pháp luật Việt Nam")
     variants.append(f"{query} nguồn báo chí chính thống")
-    return variants
+    return [_limit_words(variant, max_words) for variant in variants[:_env_int("RAG_QUERY_MAX_VARIANTS", 3)]]
 
 
 def _expand_query(query: str) -> str:
@@ -180,7 +211,7 @@ def _hyde_text(query: str) -> str:
         return ""
     try:
         response = client.chat.completions.create(
-            model=os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini"),
+            model=os.getenv("OPENROUTER_MODEL", "deepseek/deepseek-v4-flash"),
             messages=[
                 {
                     "role": "user",
@@ -193,12 +224,28 @@ def _hyde_text(query: str) -> str:
             ],
             temperature=0.2,
         )
-        return response.choices[0].message.content or ""
+        return _limit_words(response.choices[0].message.content or "", _env_int("RAG_HYDE_MAX_WORDS", 120))
     except Exception:
         return ""
 
 
 def transform_query(query: str, mode: str = "auto") -> dict:
+    cache_key = (
+        query,
+        mode,
+        os.getenv("OPENROUTER_MODEL", "deepseek/deepseek-v4-flash"),
+        os.getenv("HYDE_ENABLED", "0"),
+        os.getenv("RAG_QUERY_MAX_VARIANTS", "3"),
+        os.getenv("RAG_QUERY_MAX_WORDS", "48"),
+        os.getenv("RAG_HYDE_MAX_WORDS", "120"),
+        os.getenv("RAG_DISABLE_LLM_QUERY_VARIANTS", "0"),
+    )
+    if cache_key in QUERY_TRANSFORM_CACHE:
+        cached = QUERY_TRANSFORM_CACHE[cache_key].copy()
+        cached["trace"] = [*cached.get("trace", []), "Dùng cache cho query transformation."]
+        cached["cache_hit"] = True
+        return cached
+
     variants = []
     if mode in ("auto", "multi_query"):
         variants.extend(_llm_variants(query) or _fallback_multi_query(query))
@@ -213,17 +260,28 @@ def transform_query(query: str, mode: str = "auto") -> dict:
     if hyde:
         expanded_variants.append(f"{query}\n{hyde}")
 
-    deduped = list(dict.fromkeys(v for v in expanded_variants if v.strip()))
-    return {
+    max_variants = _env_int("RAG_QUERY_MAX_VARIANTS", 3)
+    max_words = _env_int("RAG_QUERY_MAX_WORDS", 48)
+    deduped = list(dict.fromkeys(_limit_words(v, max_words) for v in expanded_variants if v.strip()))[:max_variants]
+    result = {
         "original_query": query,
         "variants": deduped,
         "hyde": hyde,
+        "limits": {
+            "max_variants": max_variants,
+            "max_words": max_words,
+            "hyde_max_words": _env_int("RAG_HYDE_MAX_WORDS", 120),
+            "llm_variants_disabled": _env_bool("RAG_DISABLE_LLM_QUERY_VARIANTS", False),
+        },
+        "cache_hit": False,
         "trace": [
             f"Đã tạo {len(deduped)} biến thể truy vấn.",
             "HyDE đã bật." if hyde else "HyDE không bật hoặc không có API key.",
             "Đã mở rộng truy vấn bằng từ đồng nghĩa/liên quan.",
         ],
     }
+    QUERY_TRANSFORM_CACHE[cache_key] = result.copy()
+    return result
 
 
 def _normalize(results: list[dict]) -> list[dict]:
@@ -348,7 +406,7 @@ def _safe_rerank(query: str, candidates: list[dict], top_k: int, use_reranking: 
     if not use_reranking:
         return candidates[:top_k]
     try:
-        return rerank(query, candidates, top_k=top_k, method=RERANK_METHOD)
+        return rerank(query, candidates, top_k=top_k, method=os.getenv("RERANK_METHOD", RERANK_METHOD))
     except Exception as exc:
         degradation.append(_degradation_event("rerank", f"Lỗi rerank: {type(exc).__name__}; giữ thứ tự fusion."))
         return candidates[:top_k]
@@ -377,10 +435,15 @@ def retrieve(
         return []
 
     degradation: list[dict] = []
+    timings: dict[str, float] = {}
+    started = time.perf_counter()
     try:
+        stage_started = time.perf_counter()
         plan = rag_tool_router(query)
+        timings["router_ms"] = (time.perf_counter() - stage_started) * 1000
     except Exception as exc:
         degradation.append(_degradation_event("router", f"Lỗi router: {type(exc).__name__}; dùng cấu hình mặc định."))
+        timings["router_ms"] = (time.perf_counter() - started) * 1000
         plan = {
             "use_rag": True,
             "domain": "unknown",
@@ -394,12 +457,22 @@ def retrieve(
         return []
     active_fusion = fusion_method or plan["fusion_method"]
     active_alpha = alpha if alpha is not None else plan["alpha"]
+    stage_started = time.perf_counter()
     transformed = _safe_transform_query(query, transformations, degradation)
+    timings["query_transform_ms"] = (time.perf_counter() - stage_started) * 1000
 
     per_variant_results = []
+    dense_ms = 0.0
+    sparse_ms = 0.0
+    fusion_ms = 0.0
     for variant in transformed["variants"]:
+        stage_started = time.perf_counter()
         dense_results = _safe_search("dense_search", semantic_search, variant, top_k * 2, active_filters, degradation)
+        dense_ms += (time.perf_counter() - stage_started) * 1000
+        stage_started = time.perf_counter()
         sparse_results = _safe_search("sparse_search", lexical_search, variant, top_k * 2, active_filters, degradation)
+        sparse_ms += (time.perf_counter() - stage_started) * 1000
+        stage_started = time.perf_counter()
         merged = _safe_fusion(
             dense_results,
             sparse_results,
@@ -408,17 +481,26 @@ def retrieve(
             alpha=active_alpha,
             degradation=degradation,
         )
+        fusion_ms += (time.perf_counter() - stage_started) * 1000
         per_variant_results.append(_annotate(merged, "hybrid", variant, active_fusion, active_filters))
+    timings["dense_search_ms"] = dense_ms
+    timings["sparse_search_ms"] = sparse_ms
+    timings["fusion_ms"] = fusion_ms
 
     try:
+        stage_started = time.perf_counter()
         merged = rerank_rrf(per_variant_results, top_k=top_k * 3)
+        timings["multi_query_fusion_ms"] = (time.perf_counter() - stage_started) * 1000
     except Exception as exc:
         degradation.append(_degradation_event("multi_query_fusion", f"Lỗi RRF đa truy vấn: {type(exc).__name__}; nối kết quả."))
+        timings["multi_query_fusion_ms"] = 0.0
         merged = [item for result_list in per_variant_results for item in result_list][:top_k * 3]
     for item in merged:
         item["source"] = "hybrid"
 
+    stage_started = time.perf_counter()
     final_results = _safe_rerank(query, merged, top_k=top_k, use_reranking=use_reranking, degradation=degradation)
+    timings["rerank_ms"] = (time.perf_counter() - stage_started) * 1000
     for item in final_results:
         item["source"] = "hybrid"
         item["metadata"] = {
@@ -426,21 +508,33 @@ def retrieve(
             "query_plan": plan,
             "query_transform": transformed,
             "degradation": degradation,
+            "timings": timings,
         }
 
     if not final_results or final_results[0].get("score", 0.0) < score_threshold:
         best_score = final_results[0].get("score", 0.0) if final_results else 0.0
-        degradation.append(
-            _degradation_event(
-                "threshold_fallback",
-                f"Điểm hybrid cao nhất {best_score:.3f} thấp hơn ngưỡng {score_threshold:.3f}; chuyển sang PageIndex/local fallback.",
+        fallback_enabled = _env_bool("PAGEINDEX_FALLBACK_ENABLED", False)
+        if not fallback_enabled:
+            degradation.append(
+                _degradation_event(
+                    "threshold_fallback_disabled",
+                    (
+                        f"Điểm hybrid cao nhất {best_score:.3f} thấp hơn ngưỡng {score_threshold:.3f}; "
+                        "PageIndex/local vectorless fallback đang tắt theo mặc định."
+                    ),
+                )
             )
-        )
+            timings["total_retrieve_ms"] = (time.perf_counter() - started) * 1000
+            return _attach_degradation(final_results[:top_k], degradation)
+
+        degradation.append(_degradation_event("threshold_fallback", f"Điểm hybrid cao nhất {best_score:.3f} thấp hơn ngưỡng {score_threshold:.3f}; chuyển sang PageIndex/local fallback."))
+        stage_started = time.perf_counter()
         try:
             fallback = pageindex_search(query, top_k=top_k, filters=active_filters)
         except Exception as exc:
             degradation.append(_degradation_event("pageindex_fallback", f"Lỗi fallback PageIndex/local: {type(exc).__name__}."))
             fallback = []
+        timings["pageindex_fallback_ms"] = (time.perf_counter() - stage_started) * 1000
         for item in fallback:
             item["metadata"] = {
                 **item.get("metadata", {}),
@@ -449,12 +543,17 @@ def retrieve(
                 "query_plan": plan,
                 "query_transform": transformed,
                 "degradation": degradation,
+                "timings": timings,
             }
         if fallback:
+            timings["total_retrieve_ms"] = (time.perf_counter() - started) * 1000
             return fallback[:top_k]
         degradation.append(_degradation_event("empty_result", "Không có kết quả nào sau tất cả fallback."))
         return []
 
+    timings["total_retrieve_ms"] = (time.perf_counter() - started) * 1000
+    for item in final_results:
+        item["metadata"] = {**item.get("metadata", {}), "timings": timings}
     return _attach_degradation(final_results[:top_k], degradation)
 
 

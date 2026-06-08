@@ -14,6 +14,11 @@ venv/
 
 # Generated local index and runtime output
 data/index/
+data/ocr/
+group_project/evaluation/*results.json
+group_project/evaluation/*results.csv
+airflow/logs/*
+!airflow/logs/.gitkeep
 *.log
 
 # IDE / OS

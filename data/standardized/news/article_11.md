@@ -2,7 +2,7 @@
 
 **Source:** https://mps.gov.vn/bai-viet/thanh-hoa-day-manh-cong-tac-tuyen-truyen-phong-chong-ma-tuy-xay-la-chan-mem-tu-nhan-thuc-cong-dong-1778213020
 
-**Crawled:** 2026-06-08T11:18:56.047389
+**Crawled:** 2026-06-08T16:17:35.839158
 
 ---
 

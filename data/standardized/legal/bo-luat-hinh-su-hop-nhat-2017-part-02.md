@@ -1770,11 +1770,11 @@ c) Đã bị xử phạt vi ph ạm hành chính v ề hành vi này ho ặc đ�
 này, chưa được xóa án tích mà còn vi phạm; 
 d) Thu lợi bất chính từ 30.000.000 đồng đến dưới 100.000.000 đồng. 
                                            
-154 Cụm từ “lãi suất gấp 05 l ần mức lãi su ất cao nh ất” được thay th ế bằng cụm từ “lãi suất 
+154 Cụm từ “lãi su ất gấp 05 l ần mức lãi su ất cao nh ất” được thay th ế bằng cụm từ “lãi su ất 
 gấp 05 l ần tr ở lên c ủa m ức lãi su ất cao nh ất” theo quy định t ại điểm i kho ản 2 Điều 2 c ủa 
 Luật số 12/2017/QH14 s ửa đổi, bổ sung m ột số điều của Bộ luật Hình s ự số 100/2015/QH13, 
 có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
-155 Cụm t ừ “Phạm tội thu l ợi b ất chính t ừ 100.000.000 đồng tr ở lên” được thay th ế bằng 
+155 Cụm t ừ “Ph ạm tội thu l ợi b ất chính t ừ 100.000.000 đồng tr ở lên” được thay th ế bằng 
 cụm t ừ “Ph ạm t ội mà thu l ợi b ất chính 100.000.000 đồng tr ở lên” theo quy định t ại điểm i 
 khoản 2 Điều 2 c ủa Luật số 12/2017/QH14 s ửa đổi, bổ sung m ột số điều của Bộ luật Hình s ự 
 số 100/2015/QH13, có hi ệu lực kể từ ngày 01 tháng 01 n ăm 2018.
@@ -2394,7 +2394,7 @@ dưới 300.000.000 đồng ho ặc d ưới 100.000.000 đồng nh ưng đã b 
 hoặc xử phạt vi ph ạm hành chính 169 về hành vi này mà còn vi ph ạm, thì b ị phạt 
 cải tạo không giam giữ đến 03 năm hoặc phạt tù từ 01 năm đến 05 năm. 
                                            
-169 C ụm t ừ “hoặc x ử ph ạt vi ph ạm hành chính” được b ổ sung theo quy định t ại điểm k 
+169 C ụm t ừ “ho ặc x ử ph ạt vi ph ạm hành chính” được b ổ sung theo quy định t ại điểm k 
 khoản 1 Điều 2 c ủa Lu ật s ố 12/2017/QH14 s ửa đổi, b ổ sung m ột số điều của Bộ luật Hình s ự 
 số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018.
 
@@ -2424,10 +2424,10 @@ năm đến 05 năm:
 a) Vi phạm quy định về quyết định chủ trương đầu tư;  
 b) Vi phạm quy định về lập, thẩm định chủ trương đầu tư;  
                                            
-170 Cụm từ “Gây thiệt hại về tài s ản” được thay thế bằng cụm từ “Gây thất thoát, lãng phí” 
+170 Cụm từ “Gây thiệt hại về tài s ản” được thay thế bằng cụm từ “Gây th ất thoát, lãng phí” 
 theo quy định tại điểm l khoản 2 Điều 2 của Luật số 12/2017/QH14 sửa đổi, bổ sung một số điều 
 của Bộ luật Hình sự số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
-171 Cụm từ “gây thiệt hại về tài s ản” được thay th ế bằng cụm từ “gây thất thoát, lãng phí” 
+171 Cụm từ “gây thi ệt hại về tài s ản” được thay th ế bằng cụm từ “gây th ất thoát, lãng phí” 
 theo quy định tại điểm l khoản 2 Điều 2 của Luật số 12/2017/QH14 sửa đổi, bổ sung một số điều 
 của Bộ luật Hình sự số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
 172 Cụm từ “của Nhà nước” được bãi bỏ theo quy định tại điểm đ khoản 3 Điều 2 của Luật 

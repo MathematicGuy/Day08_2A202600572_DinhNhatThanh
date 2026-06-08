@@ -2,7 +2,7 @@
 
 **Source:** https://www.mps.gov.vn/bai-viet/co-so-cai-nghien-ma-tuy-tinh-quang-ninh-phat-huy-tot-vai-tro-gop-phan-phong-ngua-va-dau-tranh-phong-chong-toi-pham-te-nan-ma-tuy-d23-t45713
 
-**Crawled:** 2026-06-08T11:18:54.299594
+**Crawled:** 2026-06-08T16:17:34.697532
 
 ---
 

@@ -192,7 +192,7 @@ quy định tại” được thay thế bằng cụm từ “có thành phần 
 nguy h ại theo quy định c ủa pháp lu ật ho ặc có ch ứa ch ất ph ải lo ại tr ừ theo” theo quy định t ại 
 điểm m kho ản 2 Điều 2 c ủa Luật s ố 12/2017/QH14 s ửa đổi, b ổ sung m ột s ố điều của Bộ lu ật 
 Hình sự số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
-204 Từ “quy chuẩn” được thay th ế bằng từ “Quy chuẩn” theo quy định tại điểm m kho ản 2 
+204 Từ “quy chu ẩn” được thay th ế bằng từ “Quy chu ẩn” theo quy định tại điểm m kho ản 2 
 Điều 2 c ủa Lu ật s ố 12/2017/QH14 s ửa đổi, b ổ sung m ột s ố điều c ủa B ộ lu ật Hình s ự s ố 
 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018.
 
@@ -230,7 +230,7 @@ quy định tại” được thay thế bằng cụm từ “có thành phần 
 nguy hại theo quy định của pháp luật hoặc có chứa chất phải loại trừ theo” theo quy định tại điểm 
 m khoản 2 Điều 2 của Luật số 12/2017/QH14 sửa đổi, bổ sung một số điều của Bộ luật Hình sự 
 số 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
-206 Từ “quy chuẩn” được thay th ế bằng từ “Quy chuẩn” theo quy định tại điểm m kho ản 2 
+206 Từ “quy chu ẩn” được thay th ế bằng từ “Quy chu ẩn” theo quy định tại điểm m kho ản 2 
 Điều 2 c ủa Lu ật s ố 12/2017/QH14 s ửa đổi, b ổ sung m ột s ố điều c ủa B ộ lu ật Hình s ự s ố 
 100/2015/QH13, có hiệu lực kể từ ngày 01 tháng 01 năm 2018. 
 207 Khoản này được sửa đổi, bổ sung theo quy định tại điểm a khoản 59 Điều 1 của Luật số 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import re
+import time
 
 from dotenv import load_dotenv
 
@@ -183,9 +184,21 @@ def _safe_thought_process(chunks: list[dict], correction_report: dict, generatio
 
 def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
     generation_degradation: list[dict] = []
+    timings: dict[str, float] = {}
+    model_name = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
+    model_status = {
+        "model_name": model_name,
+        "api_call_success": False,
+        "mode": "not_started",
+        "detail": "",
+    }
+    started = time.perf_counter()
+    stage_started = time.perf_counter()
     query_plan = rag_tool_router(query)
+    timings["router_ms"] = (time.perf_counter() - stage_started) * 1000
 
     if query_plan.get("guardrail") == "prompt_injection":
+        timings["total_generation_pipeline_ms"] = (time.perf_counter() - started) * 1000
         return {
             "answer": (
                 "Tôi không thể thực hiện yêu cầu nhằm thay đổi hướng dẫn hệ thống hoặc tiết lộ dữ liệu nội bộ. "
@@ -197,6 +210,8 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
             "correction_report": {"action": "guardrail_blocked", "has_citation": False, "support_score": 0.0},
             "query_plan": query_plan,
             "degradation": [],
+            "timings": timings,
+            "model_status": {**model_status, "mode": "guardrail", "detail": "Prompt injection guardrail."},
         }
 
     if query_plan.get("guardrail") == "out_of_scope":
@@ -211,6 +226,7 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
                 "Bạn có thể hỏi tôi về pháp luật ma túy, cai nghiện, danh mục chất ma túy, "
                 "các tội phạm về ma túy hoặc tin tức liên quan."
             )
+        timings["total_generation_pipeline_ms"] = (time.perf_counter() - started) * 1000
         return {
             "answer": (
                 "Câu hỏi này nằm ngoài phạm vi dữ liệu hiện có của chatbot, vốn tập trung vào pháp luật ma túy "
@@ -222,28 +238,37 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
             "correction_report": {"action": "out_of_scope", "has_citation": False, "support_score": 0.0},
             "query_plan": query_plan,
             "degradation": [],
+            "timings": timings,
+            "model_status": {**model_status, "mode": "guardrail", "detail": "Out-of-scope guardrail."},
         }
 
     try:
+        stage_started = time.perf_counter()
         chunks = retrieve(query, top_k=top_k)
+        timings["retrieve_ms"] = (time.perf_counter() - stage_started) * 1000
     except Exception as exc:
         generation_degradation.append({"stage": "retrieve", "detail": f"Lỗi retrieve: {type(exc).__name__}."})
+        timings["retrieve_ms"] = (time.perf_counter() - stage_started) * 1000
         chunks = []
 
     try:
+        stage_started = time.perf_counter()
         reordered = reorder_for_llm(chunks)
         context = format_context(reordered)
+        timings["context_format_ms"] = (time.perf_counter() - stage_started) * 1000
     except Exception as exc:
         generation_degradation.append({"stage": "context_format", "detail": f"Lỗi format context: {type(exc).__name__}."})
+        timings["context_format_ms"] = (time.perf_counter() - stage_started) * 1000
         reordered = chunks
         context = ""
 
     answer = ""
+    stage_started = time.perf_counter()
     client = _openrouter_client()
     if client is not None:
         try:
             response = client.chat.completions.create(
-                model=os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini"),
+                model=model_name,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": f"Ngữ cảnh:\n{context}\n\nCâu hỏi: {query}"},
@@ -252,18 +277,40 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
                 top_p=TOP_P,
             )
             answer = response.choices[0].message.content or ""
+            model_status = {
+                "model_name": model_name,
+                "api_call_success": bool(answer),
+                "mode": "llm_generation" if answer else "llm_empty_response",
+                "detail": "LLM API returned a response." if answer else "LLM API returned an empty response.",
+            }
         except Exception as exc:
             generation_degradation.append({"stage": "llm_generation", "detail": f"Lỗi LLM: {type(exc).__name__}; dùng fallback extractive."})
+            model_status = {
+                "model_name": model_name,
+                "api_call_success": False,
+                "mode": "llm_error",
+                "detail": f"{type(exc).__name__}: dùng fallback extractive.",
+            }
     else:
         generation_degradation.append({"stage": "llm_generation", "detail": "Không có API key; dùng fallback extractive."})
+        model_status = {
+            "model_name": model_name,
+            "api_call_success": False,
+            "mode": "fallback_no_api_key",
+            "detail": "Không có API key; dùng fallback extractive.",
+        }
+    timings["llm_generation_ms"] = (time.perf_counter() - stage_started) * 1000
 
     if not answer:
         answer = _fallback_answer(query, reordered)
 
     try:
+        stage_started = time.perf_counter()
         answer, correction_report = self_correct_answer(query, answer, reordered)
+        timings["self_correction_ms"] = (time.perf_counter() - stage_started) * 1000
     except Exception as exc:
         generation_degradation.append({"stage": "self_correction", "detail": f"Lỗi self-correction: {type(exc).__name__}."})
+        timings["self_correction_ms"] = (time.perf_counter() - stage_started) * 1000
         correction_report = {
             "has_citation": _has_citation(answer),
             "support_score": _support_score(answer, reordered),
@@ -273,6 +320,8 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
     thought_process = _safe_thought_process(chunks, correction_report, generation_degradation)
     first_meta = chunks[0].get("metadata", {}) if chunks else {}
     degradation = [*first_meta.get("degradation", []), *generation_degradation]
+    timings = {**first_meta.get("timings", {}), **timings}
+    timings["total_generation_pipeline_ms"] = (time.perf_counter() - started) * 1000
 
     return {
         "answer": answer,
@@ -282,6 +331,8 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
         "correction_report": correction_report,
         "query_plan": first_meta.get("query_plan", {}),
         "degradation": degradation,
+        "timings": timings,
+        "model_status": model_status,
     }
 
 

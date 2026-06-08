@@ -2,7 +2,7 @@
 
 **Source:** https://www.mps.gov.vn/bai-viet/chuong-trinh-nghe-thuat-hung-yen-nang-ha-xanh-trong-vi-cong-dong-khong-ma-tuy-1777080724
 
-**Crawled:** 2026-06-08T11:18:53.001945
+**Crawled:** 2026-06-08T16:17:33.138832
 
 ---
 

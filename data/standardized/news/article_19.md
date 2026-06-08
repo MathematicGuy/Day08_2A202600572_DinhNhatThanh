@@ -1,0 +1,11 @@
+# Khởi tố ca sĩ Châu Việt Cường tội vô ý làm chết người
+
+**Source:** https://nhandan.vn/khoi-tO-ca-si-chau-viet-cuong-toi-vo-y-lam-chet-nguoi-post318576.html
+
+**Crawled:** 2026-06-08T16:17:41.480339
+
+---
+
+# Khởi tố ca sĩ Châu Việt Cường tội vô ý làm chết người
+
+Hà Nội: Khởi tố Ngọc "sủi" và ổ nhóm lợi dụng danh nghĩa doanh nghiệp cưỡng đoạt tài sản Thanh Hóa điều tra nhóm đối tượng tiêu thụ lợn nhiễm dịch tả lợn châu Phi Đà Nẵng triệt phá đường dây cá độ bóng đá với số tiền giao dịch hơn 20 tỷ đồng Quảng Trị: Bắt 3 đối tượng, thu giữ 2kg ma túy đá và hơn 7.000 viên ma túy hồng phiến Đồng Tháp: Tạm giữ đối tượng trộm tài sản để trả nợ Công an Nghệ An bắt giữ băng nhóm lừa đảo xuyên quốc gia Đà Nẵng khống chế kịp thời vụ cháy rừng giữa thời tiết nắng nóng cao độ Lại phát hiện có diều tại Nội Bài, nhiều chuyến bay phải tạm dừng cất cánh Hồ sơ giao đất cho Vinatea Mộc Châu: Những mâu thuẫn cần được làm rõ Cảnh sát biển bắt giữ tàu vận chuyển trái phép hơn 150.000 lít dầu D.O Khởi tố vụ án và tạm giữ hình sự đối tượng chống người thi hành công vụ Tạm giữ 1.820 sản phẩm hàng hóa có dấu hiệu xâm phạm quyền sở hữu công nghiệp ở Đắk Lắk [Video] Thanh Hóa khởi tố đối tượng sản xuất thực phẩm giả Khởi tố giám đốc doanh nghiệp sản xuất, buôn bán thực phẩm giả Phó Thủ tướng Lê Tiến Châu làm Chủ tịch Hội đồng phối hợp phổ biến, giáo dục pháp luật Trung ương Khởi tố đối tượng kinh doanh giả mạo nhãn hiệu nổi tiếng tại Khánh Hòa Khởi tố 7 bị can trong vụ án liên quan xây dựng nông thôn mới ở Huế Khởi tố vụ án vi phạm quy định về kế toán gây thiệt hại hơn 4,3 tỷ đồng và buôn bán hàng giả Bước chuyển trong xã hội hóa thi hành án dân sự Hà Nội phát động Tháng hành động phòng, chống ma túy năm 2026 Hoàn thiện thể chế, bảo đảm nguồn lực cho chính quyền địa phương 2 cấp Khai mạc Hội nghị Sơ kết công tác phối hợp phòng, chống ma túy giữa Bộ Công an Việt Nam và Bộ Công an Lào An Giang: Phát hiện cơ sở livestream, thu giữ 210 bộ kích điện đánh bắt thủy sản Đồng Tháp: Khởi tố đối tượng tàng trữ trái phép súng và đạn quân dụng Quảng Trị: Hiệu trưởng một trường tiểu học bị bắt tạm giam về tội nhận hối lộ Hoàn thiện quy định chứng chỉ hành nghề kiến trúc, đáp ứng hội nhập quốc tế Nâng cao hiệu quả thi hành Luật Tương trợ tư pháp về dân sự Bắt 5 đối tượng mua bán, tàng trữ trái phép chất ma túy

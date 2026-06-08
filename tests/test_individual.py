@@ -42,7 +42,7 @@ class TestTask1(unittest.TestCase):
 
         valid_extensions = {".pdf", ".docx", ".doc"}
         files = [f for f in legal_dir.iterdir()
-                 if f.is_file() and f.suffix.lower() in valid_extensions]
+				if f.is_file() and f.suffix.lower() in valid_extensions]
         self.assertGreaterEqual(
             len(files), 3,
             f"Cần tối thiểu 3 file pháp luật, hiện có {len(files)}: {[f.name for f in files]}"
@@ -56,7 +56,7 @@ class TestTask1(unittest.TestCase):
 
         valid_extensions = {".pdf", ".docx", ".doc"}
         files = [f for f in legal_dir.iterdir()
-                 if f.is_file() and f.suffix.lower() in valid_extensions]
+				if f.is_file() and f.suffix.lower() in valid_extensions]
         for f in files:
             self.assertGreater(
                 f.stat().st_size, 1024,
@@ -89,7 +89,7 @@ class TestTask2(unittest.TestCase):
             len(files), 5,
             f"Cần tối thiểu 5 bài báo, hiện có {len(files)}"
         )
-
+	
     def test_news_files_have_content(self):
         """Mỗi file bài báo có nội dung (>500 bytes)."""
         news_dir = DATA_DIR / "landing" / "news"
