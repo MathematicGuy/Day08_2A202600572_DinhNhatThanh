@@ -1,0 +1,6 @@
+[server]
+# Streamlit's source watcher can introspect optional dependency modules such as
+# instructor.dsl.validators. In some environments that triggers instructor's
+# optional Mistral provider import and fails before the app can fallback cleanly.
+# Restart Streamlit after changing this file.
+fileWatcherType = "none"

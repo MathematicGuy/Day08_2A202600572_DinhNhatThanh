@@ -2,20 +2,21 @@
 
 ## Overall Scores
 
-| Metric | baseline | disable_llm_query_variants | query_variants_and_hyde_enable |
-|---|---:|---:|---:|
-| faithfulness | 0.380 | 0.364 | 0.353 |
-| answer_relevance | 0.468 | 0.444 | 0.480 |
-| context_recall | 0.412 | 0.407 | 0.407 |
-| context_precision | 0.070 | 0.065 | 0.065 |
-| average | 0.333 | 0.320 | 0.327 |
-| latency_ms | 10197.902 | 5286.954 | 12289.104 |
+| Metric | baseline | disable_llm_query_variants | query_variants_and_hyde_enable | jina_late_chunking |
+|---|---:|---:|---:|---:|
+| faithfulness | 0.375 | 0.366 | 0.358 | 0.367 |
+| answer_relevance | 0.461 | 0.466 | 0.476 | 0.464 |
+| context_recall | 0.403 | 0.402 | 0.402 | 0.412 |
+| context_precision | 0.062 | 0.064 | 0.064 | 0.068 |
+| average | 0.325 | 0.324 | 0.325 | 0.328 |
+| latency_ms | 8388.268 | 4258.791 | 10320.101 | 11303.582 |
 
 ## Evaluator
 
 - `baseline`: ragas_unavailable_or_missing_api_key
 - `disable_llm_query_variants`: ragas_unavailable_or_missing_api_key
 - `query_variants_and_hyde_enable`: ragas_unavailable_or_missing_api_key
+- `jina_late_chunking`: ragas_unavailable_or_missing_api_key
 
 ## Worst Performers
 
@@ -30,4 +31,5 @@
 ## Notes
 
 - PageIndex is not part of the default evaluation configs; keep it as a later last-option fallback only.
+- `jina_late_chunking` needs `JINA_API_KEY`; otherwise it falls back to local embeddings and the comparison is not a true late-chunking run.
 - If RAGAS is unavailable or judge credentials are missing, the script reports local overlap fallback metrics.

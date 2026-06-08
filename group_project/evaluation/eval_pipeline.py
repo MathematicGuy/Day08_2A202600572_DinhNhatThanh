@@ -20,6 +20,7 @@ from src.task9_retrieval_pipeline import retrieve
 GOLDEN_DATASET_PATH = Path(__file__).parent / "golden_dataset.json"
 RESULTS_PATH = Path(__file__).parent / "results.md"
 RAW_RESULTS_PATH = Path(__file__).parent / "ragas_results.json"
+RAGAS_IMPORT_ERROR = ""
 
 BASELINE_CONFIG = {
     "name": "baseline",
@@ -122,22 +123,51 @@ def _run_pipeline_case(item: dict, top_k: int = 5, generate: bool = True) -> dic
     }
 
 
+def _patch_mistralai_top_level_export() -> None:
+    """Support instructor versions expecting `from mistralai import Mistral`.
+
+    Some environments install an older Mistral SDK where `Mistral` lives under
+    `mistralai.client`. RAGAS can import `instructor`, and instructor imports
+    its optional Mistral provider during module discovery. This compatibility
+    patch avoids a hard ImportError before RAGAS can run or gracefully fallback.
+    """
+    try:
+        import mistralai
+
+        if not hasattr(mistralai, "Mistral"):
+            from mistralai.client import Mistral
+
+            setattr(mistralai, "Mistral", Mistral)
+    except Exception:
+        # RAGAS does not require Mistral for this evaluator; if the SDK is not
+        # installed or is incompatible, the normal RAGAS import guard handles it.
+        return
+
+
 def _ragas_available() -> bool:
+    global RAGAS_IMPORT_ERROR
+    RAGAS_IMPORT_ERROR = ""
     if not (os.getenv("OPENAI_API_KEY") or os.getenv("OPENROUTER_API_KEY")):
+        RAGAS_IMPORT_ERROR = "missing_openai_or_openrouter_api_key"
         return False
     try:
+        _patch_mistralai_top_level_export()
         import ragas  # noqa: F401
         import datasets  # noqa: F401
-    except Exception:
+    except Exception as exc:
+        RAGAS_IMPORT_ERROR = f"{type(exc).__name__}: {exc}"
         return False
     return True
 
 
 def _evaluate_rows_with_ragas(rows: list[dict]) -> tuple[list[dict], str]:
     if not _ragas_available():
-        return rows, "ragas_unavailable_or_missing_api_key"
+        for row in rows:
+            row["ragas_error"] = RAGAS_IMPORT_ERROR
+        return rows, f"ragas_unavailable:{RAGAS_IMPORT_ERROR or 'unknown'}"
 
     try:
+        _patch_mistralai_top_level_export()
         from datasets import Dataset
         from ragas import evaluate
         from ragas.metrics import answer_relevancy, context_precision, context_recall, faithfulness
