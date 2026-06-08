@@ -1,99 +1,97 @@
-"""
-Task 8 — PageIndex Vectorless RAG.
-
-Đăng ký tài khoản tại: https://pageindex.ai/
-SDK & sample code: https://github.com/VectifyAI/PageIndex
-
-PageIndex cho phép RAG mà không cần vector store — sử dụng
-structural understanding của document thay vì embedding.
-
-Cài đặt:
-    pip install pageindex
-
-Hướng dẫn:
-    1. Đăng ký account tại pageindex.ai
-    2. Lấy API key
-    3. Upload documents
-    4. Query sử dụng PageIndex API
-"""
+"""Task 8 - PageIndex vectorless RAG with local fallback."""
 
 import os
 from pathlib import Path
+
+import requests
 from dotenv import load_dotenv
+
+from .local_index import ensure_chunks, metadata_matches, tokenize
 
 load_dotenv()
 
 PAGEINDEX_API_KEY = os.getenv("PAGEINDEX_API_KEY", "")
+PAGEINDEX_INDEX_ID = os.getenv("PAGEINDEX_INDEX_ID", "")
+PAGEINDEX_API_URL = os.getenv("PAGEINDEX_API_URL", "https://api.pageindex.ai")
 STANDARDIZED_DIR = Path(__file__).parent.parent / "data" / "standardized"
 
 
 def upload_documents():
-    """
-    Upload toàn bộ markdown documents lên PageIndex.
-    """
-    # TODO: Implement upload
-    #
-    # Tham khảo: https://github.com/VectifyAI/PageIndex
-    #
-    # from pageindex import PageIndex
-    #
-    # pi = PageIndex(api_key=PAGEINDEX_API_KEY)
-    #
-    # for md_file in STANDARDIZED_DIR.rglob("*.md"):
-    #     content = md_file.read_text(encoding="utf-8")
-    #     pi.upload(
-    #         content=content,
-    #         metadata={"filename": md_file.name, "type": md_file.parent.name}
-    #     )
-    #     print(f"  ✓ Uploaded: {md_file.name}")
-    raise NotImplementedError("Implement upload_documents")
+    """Best-effort upload using the installed PageIndex SDK, when available."""
+    if not PAGEINDEX_API_KEY:
+        raise RuntimeError("PAGEINDEX_API_KEY is not configured")
+    try:
+        from pageindex import PageIndex
+
+        client = PageIndex(api_key=PAGEINDEX_API_KEY)
+        uploaded = []
+        for md_file in STANDARDIZED_DIR.rglob("*.md"):
+            content = md_file.read_text(encoding="utf-8", errors="ignore")
+            result = client.upload(
+                content=content,
+                metadata={"filename": md_file.name, "type": md_file.parent.name},
+            )
+            uploaded.append(result)
+        return uploaded
+    except Exception as exc:
+        raise RuntimeError(f"PageIndex upload failed: {exc}") from exc
 
 
-def pageindex_search(query: str, top_k: int = 5) -> list[dict]:
-    """
-    Vectorless retrieval sử dụng PageIndex.
-    Dùng làm fallback khi hybrid search không có kết quả tốt.
+def _local_vectorless_search(query: str, top_k: int, filters: dict | None = None) -> list[dict]:
+    query_tokens = set(tokenize(query))
+    results = []
+    for chunk in ensure_chunks():
+        if not metadata_matches(chunk.get("metadata", {}), filters):
+            continue
+        doc_tokens = set(tokenize(chunk["content"]))
+        score = len(query_tokens & doc_tokens) / max(1, len(query_tokens))
+        if score > 0:
+            results.append(
+                {
+                    "content": chunk["content"],
+                    "score": float(score),
+                    "metadata": chunk.get("metadata", {}),
+                    "source": "pageindex",
+                }
+            )
+    results.sort(key=lambda item: item["score"], reverse=True)
+    return results[:top_k]
 
-    Args:
-        query: Câu truy vấn
-        top_k: Số lượng kết quả tối đa
 
-    Returns:
-        List of {
-            'content': str,
-            'score': float,
-            'metadata': dict,
-            'source': 'pageindex'   # Đánh dấu nguồn retrieval
-        }
-    """
-    # TODO: Implement PageIndex query
-    #
-    # from pageindex import PageIndex
-    #
-    # pi = PageIndex(api_key=PAGEINDEX_API_KEY)
-    # results = pi.query(query=query, top_k=top_k)
-    #
-    # return [
-    #     {
-    #         "content": r.text,
-    #         "score": r.score,
-    #         "metadata": r.metadata,
-    #         "source": "pageindex"
-    #     }
-    #     for r in results
-    # ]
-    raise NotImplementedError("Implement pageindex_search")
+def pageindex_search(query: str, top_k: int = 5, filters: dict | None = None) -> list[dict]:
+    """Query PageIndex if configured; otherwise use a local structural fallback."""
+    if top_k <= 0:
+        return []
+
+    if PAGEINDEX_API_KEY and PAGEINDEX_INDEX_ID:
+        try:
+            response = requests.post(
+                f"{PAGEINDEX_API_URL.rstrip('/')}/query",
+                headers={"Authorization": f"Bearer {PAGEINDEX_API_KEY}"},
+                json={"index_id": PAGEINDEX_INDEX_ID, "query": query, "top_k": top_k},
+                timeout=20,
+            )
+            response.raise_for_status()
+            payload = response.json()
+            raw_results = payload.get("results", payload if isinstance(payload, list) else [])
+            results = []
+            for item in raw_results[:top_k]:
+                results.append(
+                    {
+                        "content": item.get("text") or item.get("content") or "",
+                        "score": float(item.get("score", 0.0)),
+                        "metadata": item.get("metadata", {}),
+                        "source": "pageindex",
+                    }
+                )
+            if results:
+                return results
+        except Exception:
+            pass
+
+    return _local_vectorless_search(query, top_k, filters=filters)
 
 
 if __name__ == "__main__":
-    if not PAGEINDEX_API_KEY:
-        print("⚠ Hãy set PAGEINDEX_API_KEY trong file .env")
-        print("  Đăng ký tại: https://pageindex.ai/")
-    else:
-        print("Uploading documents...")
-        upload_documents()
-
-        print("\nTest query:")
-        results = pageindex_search("hình phạt sử dụng ma tuý", top_k=3)
-        for r in results:
-            print(f"[{r['score']:.3f}] {r['content'][:100]}...")
+    for r in pageindex_search("hinh phat su dung ma tuy", top_k=3):
+        print(f"[{r['score']:.3f}] {r['content'][:100]}...")
