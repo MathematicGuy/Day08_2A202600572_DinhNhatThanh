@@ -34,13 +34,25 @@ BASELINE_CONFIG = {
 }
 
 OPTIMIZED_CONFIG = {
-    "name": "optimized_fast",
+    "name": "disable_llm_query_variants",
     "env": {
         "PAGEINDEX_FALLBACK_ENABLED": "0",
         "RAG_QUERY_MAX_VARIANTS": "1",
         "RAG_QUERY_MAX_WORDS": "32",
         "RAG_DISABLE_LLM_QUERY_VARIANTS": "1",
         "HYDE_ENABLED": "0",
+        "RERANK_METHOD": "cross_encoder",
+    },
+}
+
+HYDE_CONFIG = {
+    "name": "query_variants_and_hyde_enable",
+    "env": {
+        "PAGEINDEX_FALLBACK_ENABLED": "0",
+        "RAG_QUERY_MAX_VARIANTS": "1",
+        "RAG_QUERY_MAX_WORDS": "32",
+        "RAG_DISABLE_LLM_QUERY_VARIANTS": "1",
+        "HYDE_ENABLED": "1",
         "RERANK_METHOD": "cross_encoder",
     },
 }
@@ -172,7 +184,7 @@ def compare_configs(
     use_ragas: bool = True,
 ) -> dict:
     dataset = golden_dataset or load_golden_dataset()
-    selected_configs = configs or [BASELINE_CONFIG, OPTIMIZED_CONFIG]
+    selected_configs = configs or [BASELINE_CONFIG, OPTIMIZED_CONFIG, HYDE_CONFIG]
     return {config["name"]: evaluate_config(dataset, config, use_ragas=use_ragas) for config in selected_configs}
 
 
